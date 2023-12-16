@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Second Excel File Processor</title>
+</head>
+<body>
+    <h1>Upload Second Excel File For New Software</h1>
+    <form action="/second" method="post" enctype="multipart/form-data">
+        <input type="file" name="second_file"><br><br>
+        <button type="submit" name="action" value="rename_columns">Rename Columns</button><br><br>
+        <button type="submit" name="action" value="save_file">Save File</button>
+    </form>
+    {% if data %}
+        <div>
+            <h2>Processed Data</h2>
+            {{ data|safe }}
+        </div>
+    {% elif message %}
+        <p>{{ message }}</p>
+    {% endif %}
+</body>
+</html>

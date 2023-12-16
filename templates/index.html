@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excel File Processor</title>
+</head>
+<body>
+    <h1>Upload Excel File For Old Software</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file"><br><br>
+        <button type="submit" name="action" value="remove_nulls">Remove Null Rows</button>
+        <button type="submit" name="action" value="combine_columns">Combine Columns</button>
+        <button type="submit" name="action" value="drop_columns">Drop Columns</button>
+        <button type="submit" name="action" value="save_file">Save File</button>
+        <br><br>
+        <!-- Add this line in your index.html -->
+        <a href="/second">Go to Second File Processor</a>
+        <br><br>
+        <a href="/third">Go to Comparison File Result</a>
+
+    </form>
+    {% if data %}
+        <div>
+            <h2>Processed Data</h2>
+            {{ data|safe }}
+        </div>
+    {% elif message %}
+        <p>{{ message }}</p>
+    {% endif %}
+</body>
+</html>
