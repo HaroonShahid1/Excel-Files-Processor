@@ -10,46 +10,43 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 def compare_quantities(df1, df2):
-    # Ensure the dataframes have a 'Quantity' and 'Pcode' column
     if 'Quantity' not in df1 or 'Quantity' not in df2 or 'Pcode' not in df1 or 'Pcode' not in df2:
         return pd.DataFrame(), "Both files must have 'Quantity' and 'Pcode' columns."
 
-    # Merge dataframes on 'Pcode'
-    merged_df = pd.merge(df1, df2, on='Pcode', suffixes=('_file1', '_file2'))
-
-    # Filter rows where quantities differ
-    result_df = merged_df[merged_df['Quantity_file1'] != merged_df['Quantity_file2']]
+    merged_df = pd.merge(df1, df2, on='Pcode', suffixes=('_old_software', '_new_software'))
+    result_df = merged_df[merged_df['Quantity_old_software'] != merged_df['Quantity_new_software']]
     return result_df, ""
-
 
 @app.route('/third', methods=['GET', 'POST'])
 def third_page():
     if request.method == 'POST':
-        # Handling the compare action
+        if '_old_software' in request.files and '_new_software' in request.files:
+            file1 = request.files['_old_software']
+            file2 = request.files['_old_software']
+            
+            if file1.filename != '' and file2.filename != '':
+                df1 = pd.read_excel(file1, engine='openpyxl')
+                df2 = pd.read_excel(file2, engine='openpyxl')
+                
+                session['df1'] = df1.to_json()  # Store DataFrame as JSON string in session
+                session['df2'] = df2.to_json()
+
         if 'compare' in request.form:
             if 'df1' in session and 'df2' in session:
                 df1 = pd.read_json(session['df1'])
                 df2 = pd.read_json(session['df2'])
+                
                 result_df, error_message = compare_quantities(df1, df2)
+                
                 if error_message:
                     return render_template('third_page.html', message=error_message)
+
                 session['result_df'] = result_df.to_json()
                 result_data_html = result_df.to_html(classes='data', header="true", index=False)
                 return render_template('third_page.html', data1=df1.to_html(), data2=df2.to_html(), result_data=result_data_html)
             else:
                 return render_template('third_page.html', message='Please upload both files.')
 
-        # Handling the file upload
-        if 'file1' in request.files and 'file2' in request.files:
-            file1 = request.files['file1']
-            file2 = request.files['file2']
-            if file1.filename != '' and file2.filename != '':
-                df1 = pd.read_excel(file1, engine='openpyxl')
-                df2 = pd.read_excel(file2, engine='openpyxl')
-                session['df1'] = df1.to_json()
-                session['df2'] = df2.to_json()
-
-        # Handling the save action
         if 'save_file' in request.form:
             if 'result_df' in session:
                 result_df = pd.read_json(session['result_df'])

@@ -1,38 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compare Excel Files</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #3498db;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        p{
+            color: #3498db;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: box-shadow 0.3s;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        div[data-file] {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        div[data-file]:hover {
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
+        }
+
+        div[data-file] h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        div[data-file] table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        div[data-file] table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        div[data-file] th, div[data-file] td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        div[data-file] th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        div[data-file] p {
+            color: #777;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Old And New Modified Excel Files For Comparison</h1>
+    <h1>Excel Processor</h1>
+    <h2>Upload Old And New Modified Excel Files For Comparison</h2>
     <form action="/third" method="post" enctype="multipart/form-data">
-        <input type="file" name="file1"><br><br>
-        <input type="file" name="file2"><br><br>
+        <p>Choose File for Old Software</p>
+        <input type="file" name="file1"><br>
+        <p>Choose File for New Software</p>
+        <input type="file" name="file2"><br>
         <button type="submit" name="compare">Compare Quantities</button><br><br>
         <button type="submit" name="save_file">Save Result File</button><br><br>
     </form>
+
+
     {% if message %}
-        <p>{{ message }}</p>
+        <p class="message">{{ message }}</p>
     {% endif %}
-    <div style="display: flex;">
-        <div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <div data-file>
             <h2>File 1 Data</h2>
             {% if data1 %}
                 {{ data1|safe }}
             {% endif %}
         </div>
-        <div>
+        <div data-file>
             <h2>File 2 Data</h2>
             {% if data2 %}
                 {{ data2|safe }}
             {% endif %}
         </div>
+        {% if result_data %}
+            <div data-file>
+                <h2>Comparison Result</h2>
+                {{ result_data|safe }}
+            </div>
+        {% endif %}
     </div>
-    {% if result_data %}
-        <div>
-            <h2>Comparison Result</h2>
-            {{ result_data|safe }}
-        </div>
-    {% endif %}
+
+
+    <script>
+        // Add any additional interactive scripts here if needed
+    </script>
 </body>
 </html>

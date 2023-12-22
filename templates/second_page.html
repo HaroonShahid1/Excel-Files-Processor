@@ -1,22 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Second Excel File Processor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #3498db;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: box-shadow 0.3s;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+    
+        .result-container {
+            margin-top: 20px;
+        }
+
+        .result-container h2 {
+            color: #333;
+        }
+
+        .result-container p {
+            color: #777;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #3498db;
+        }
+        
+        .result-heading {
+            color: #3498db;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .processed-data {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            transition: box-shadow 0.3s, background-color 0.3s;
+        }
+        
+        .processed-data:hover {
+            background-color: #f0f8ff; 
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.8); 
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 20px;
+            margin-top: 15px;
+            border: 2px solid #e74c3c;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            display: block;
+            margin-top: 10px;
+        }
+
+        a:hover {
+            color: #1d70b8;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Second Excel File For New Software</h1>
+    <h1>Excel Processor</h1>
+    <h2>Upload Excel File For New Software</h2>
     <form action="/second" method="post" enctype="multipart/form-data">
         <input type="file" name="second_file"><br><br>
         <button type="submit" name="action" value="rename_columns">Rename Columns</button><br><br>
         <button type="submit" name="action" value="save_file">Save File</button>
+
+        <br><br>
+        <a href="/third">Go to Comparison File Result</a>
     </form>
-    {% if data %}
-        <div>
-            <h2>Processed Data</h2>
-            {{ data|safe }}
-        </div>
-    {% elif message %}
-        <p>{{ message }}</p>
-    {% endif %}
+
+    <div class="result-container">
+        {% if data %}
+            <h2 class="result-heading">Processed Data</h2>
+            <div class="processed-data">{{ data|safe }}</div>
+        {% elif message %}
+            <p class="error-message">{{ message }}</p>
+        {% endif %}
+    </div>
+    
+    <script>
+        // Add any additional interactive scripts here if needed
+    </script>
 </body>
 </html>
